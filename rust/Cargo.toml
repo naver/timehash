@@ -1,0 +1,16 @@
+[package]
+name = "timehash"
+version = "0.1.0"
+edition = "2021"
+authors = ["Timehash Contributors"]
+description = "Hierarchical time indexing for efficient business hours search"
+license = "Apache-2.0"
+repository = "https://github.com/naver/timehash"
+
+[lib]
+name = "timehash"
+path = "src/lib.rs"
+
+[[example]]
+name = "basic_usage"
+path = "examples/basic_usage.rs"

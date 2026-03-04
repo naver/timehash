@@ -1,0 +1,25 @@
+{
+  "name": "timehash",
+  "version": "1.0.0",
+  "description": "Hierarchical time indexing for efficient business hours search",
+  "main": "timehash.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "time",
+    "indexing",
+    "search",
+    "hierarchical",
+    "timehash"
+  ],
+  "author": "Naver",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naver/timehash.git"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
