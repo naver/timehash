@@ -47,7 +47,7 @@
                 std::vector<std::string> terms;
 
                 if (hhmm > 10000) {
-                    return std::move(terms);  //Return an empty vector
+                    return terms;
                 }
 
                 for (auto measure : measures_) {
@@ -97,13 +97,13 @@
                     key /= 100;
                 }
 
-                char term[3] = "";
-                std::sprintf(term, "%d%d", key / 10, key % 10);
+                char term[3] = {};
+                std::snprintf(term, sizeof(term), "%d%d", key / 10, key % 10);
 
                 return std::string(term);
             }
 
-            void cover(std::vector<std::string>& terms, int measureIndex, std::string parentKey, int from, int to) {
+            void cover(std::vector<std::string>& terms, size_t measureIndex, std::string parentKey, int from, int to) {
                 if (measureIndex >= measures_.size()) {
                     return ;
                 }
