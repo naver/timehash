@@ -4,12 +4,6 @@ Hierarchical time indexing for efficient business hours search.
 
 Timehash generates hierarchical hash keys for time ranges, enabling efficient temporal filtering in search systems with minimal index overhead. It achieves O(log T) space complexity compared to O(T) in naive minute-level indexing while maintaining 100% precision and recall.
 
-## Paper
-
-- **arXiv**: [Timehash: Hierarchical Time Indexing for Efficient Business Hours Search](https://arxiv.org/abs/2603.02941) (arXiv:2603.02941)
-- **Status**: Under review at VLDB 2026 Industry Track
-- **Authors**: Jinoh Kim, Jaewon Son
-
 ## Features
 
 - **Hierarchical Multi-Resolution**: Decomposes time ranges into hierarchical buckets at multiple resolutions
@@ -118,7 +112,7 @@ For a restaurant operating 11:40 AM - 9:00 PM, Timehash generates 5 keys:
 - **Time Complexity**: O(log T) for both index and query term generation
 - **Comparison**: Naive minute-level indexing requires O(T) space
 
-For details, proofs, and experiments, see the [paper on arXiv](https://arxiv.org/abs/2603.02941).
+For details, proofs, and experiments, see the accompanying paper.
 
 ## Documentation
 
@@ -148,6 +142,11 @@ For details, proofs, and experiments, see the [paper on arXiv](https://arxiv.org
 - **Query Latency**: Efficient term-based retrieval with O(log T) query keys
 - **Precision**: 100% (zero false positives)
 - **Recall**: 100% (zero false negatives)
+
+See [`benchmarks/`](benchmarks/) for reproducible scripts that generate
+the synthetic POI distribution, run the in-memory and PostgreSQL GiST
+comparisons, the within-Elasticsearch BKD comparison, and the Yelp
+Open Dataset cross-dataset validation.
 
 ## Use Cases
 

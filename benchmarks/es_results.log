@@ -1,0 +1,48 @@
+<site-packages>/elasticsearch/connection/base.py:200: ElasticsearchWarning: Elasticsearch built-in security features are not enabled. Without authentication, your cluster could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-minimal-setup.html to enable security.
+  warnings.warn(message, category=ElasticsearchWarning)
+Connected to Elasticsearch 7.17.4
+
+============================================================
+Scale: 100,000 POIs
+============================================================
+  Generating 100,000 POIs... 0.1s
+  [ES integer_range] building... <benchmark>/benchmark_es.py:118: DeprecationWarning: The 'body' parameter is deprecated for the 'create' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  es.indices.create(index=INDEX_RANGE, body={
+<benchmark>/benchmark_es.py:144: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_RANGE, body={
+done (1.23s)
+  [ES Timehash] building... <benchmark>/benchmark_es.py:158: DeprecationWarning: The 'body' parameter is deprecated for the 'create' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  es.indices.create(index=INDEX_TIMEHASH, body={
+<benchmark>/benchmark_es.py:193: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_TIMEHASH, body={
+done (2.05s, 9.6 terms/doc)
+
+  Method                  Terms/Doc  Build(s)  P50(ms)  P95(ms)   Prec
+  ------------------------------------------------------------------
+  ES integer_range                —      1.23     37.9     39.9  1.000
+  ES Timehash                   9.6      2.05     58.5     61.8  1.000
+
+============================================================
+Scale: 1,000,000 POIs
+============================================================
+  Generating 1,000,000 POIs... 1.3s
+  [ES integer_range] building... done (12.95s)
+  [ES Timehash] building... done (21.87s, 9.6 terms/doc)
+
+  Method                  Terms/Doc  Build(s)  P50(ms)  P95(ms)   Prec
+  ------------------------------------------------------------------
+  ES integer_range                —     12.95     40.4     43.4  1.000
+  ES Timehash                   9.6     21.87     58.9     64.9  1.000
+
+
+============================================================
+SUMMARY (P50 latency in ms)
+============================================================
+
+   100,000 POIs:
+  ES integer_range        P50=  37.9ms  P95=  39.9ms  Prec=1.000
+  ES Timehash             P50=  58.5ms  P95=  61.8ms  Prec=1.000
+
+ 1,000,000 POIs:
+  ES integer_range        P50=  40.4ms  P95=  43.4ms  Prec=1.000
+  ES Timehash             P50=  58.9ms  P95=  64.9ms  Prec=1.000

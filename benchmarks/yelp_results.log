@@ -1,0 +1,128 @@
+Loading <yelp-data-dir>/yelp_academic_dataset_business.json ...
+Loaded 127,123 businesses with hours across 24 states.
+
+## Start-time distribution (ALL Yelp, n=801,015 day-ranges)
+  :00      86.74%
+  :30      12.87%
+  :15/:45   0.39%
+  other     0.00%
+  avg duration: 670.3 minutes
+
+## Hierarchy optimization sweep (ALL Yelp)
+  baseline (5M only): 107,382,718 keys = 100%
+  Configuration              Depth            Keys    Ratio
+  ------------------------------------------------------------
+  5M only                        1     107,382,718  100.00%
+  1H, 5M                         2       9,950,097    9.27%
+  1H, 30M, 5M                    3       9,058,970    8.44%
+  2H, 1H, 5M                     3       5,890,619    5.49%
+  2H, 1H, 30M, 5M                4       4,999,492    4.66%
+  2H, 1H, 30M, 15M, 5M           5       4,985,364    4.64%
+  4H, 1H, 15M, 5M, 1M            5       4,132,088    3.85%
+
+## Compact summary for paper (ALL Yelp)
+  5M only                    100.00%
+  1H, 5M                       9.27%
+  1H, 30M, 5M                  8.44%
+  2H, 1H, 5M                   5.49%
+  2H, 1H, 30M, 5M              4.66%
+  2H, 1H, 30M, 15M, 5M         4.64%
+  4H, 1H, 15M, 5M, 1M          3.85%
+
+============================================================
+State: PA (n=28,224 businesses)
+
+## Start-time distribution (PA, n=178,003 day-ranges)
+  :00      85.29%
+  :30      14.24%
+  :15/:45   0.46%
+  other     0.00%
+
+## Compact summary for paper (PA)
+  5M only                    100.00%
+  1H, 5M                       9.39%
+  1H, 30M, 5M                  8.45%
+  2H, 1H, 5M                   5.61%
+  2H, 1H, 30M, 5M              4.68%
+  2H, 1H, 30M, 15M, 5M         4.66%
+  4H, 1H, 15M, 5M, 1M          3.93%
+
+============================================================
+State: FL (n=22,877 businesses)
+
+## Start-time distribution (FL, n=144,826 day-ranges)
+  :00      87.17%
+  :30      12.44%
+  :15/:45   0.38%
+  other     0.00%
+
+## Compact summary for paper (FL)
+  5M only                    100.00%
+  1H, 5M                       9.22%
+  1H, 30M, 5M                  8.43%
+  2H, 1H, 5M                   5.44%
+  2H, 1H, 30M, 5M              4.65%
+  2H, 1H, 30M, 15M, 5M         4.64%
+  4H, 1H, 15M, 5M, 1M          3.83%
+
+============================================================
+State: TN (n=10,398 businesses)
+
+## Start-time distribution (TN, n=65,862 day-ranges)
+  :00      87.33%
+  :30      12.17%
+  :15/:45   0.49%
+  other     0.01%
+
+## Compact summary for paper (TN)
+  5M only                    100.00%
+  1H, 5M                       9.24%
+  1H, 30M, 5M                  8.43%
+  2H, 1H, 5M                   5.46%
+  2H, 1H, 30M, 5M              4.65%
+  2H, 1H, 30M, 15M, 5M         4.64%
+  4H, 1H, 15M, 5M, 1M          3.81%
+
+============================================================
+State: IN (n=9,513 businesses)
+
+## Start-time distribution (IN, n=60,518 day-ranges)
+  :00      86.70%
+  :30      13.01%
+  :15/:45   0.29%
+  other     0.00%
+
+## Compact summary for paper (IN)
+  5M only                    100.00%
+  1H, 5M                       9.22%
+  1H, 30M, 5M                  8.43%
+  2H, 1H, 5M                   5.45%
+  2H, 1H, 30M, 5M              4.65%
+  2H, 1H, 30M, 15M, 5M         4.64%
+  4H, 1H, 15M, 5M, 1M          3.82%
+
+============================================================
+State: MO (n=9,450 businesses)
+
+## Start-time distribution (MO, n=59,434 day-ranges)
+  :00      86.97%
+  :30      12.67%
+  :15/:45   0.36%
+  other     0.00%
+
+## Compact summary for paper (MO)
+  5M only                    100.00%
+  1H, 5M                       9.23%
+  1H, 30M, 5M                  8.43%
+  2H, 1H, 5M                   5.44%
+  2H, 1H, 30M, 5M              4.64%
+  2H, 1H, 30M, 15M, 5M         4.63%
+  4H, 1H, 15M, 5M, 1M          3.79%
+
+## Compare to Naver production distribution (paper Table 4)
+  Naver: :00=83.7%, :30=15.5%, :15/:45+other=0.8%
+  Naver hierarchy ratio (5-level 2H,1H,30M,15M,5M) = 6.30% of 5M-only baseline
+
+If Yelp ratio for the same 5-level config is within ~10% of 6.30%,
+the chosen hierarchy is dataset-robust → universality argument.
+If it differs by >50%, write up as evidence for adaptive hierarchy.
