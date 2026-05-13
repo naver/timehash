@@ -119,9 +119,9 @@ State: MO (n=9,450 businesses)
   2H, 1H, 30M, 15M, 5M         4.63%
   4H, 1H, 15M, 5M, 1M          3.79%
 
-## Compare to Naver production distribution (paper Table 4)
-  Naver: :00=83.7%, :30=15.5%, :15/:45+other=0.8%
-  Naver hierarchy ratio (5-level 2H,1H,30M,15M,5M) = 6.30% of 5M-only baseline
+## Compare to production distribution (paper Table 4)
+  Production: :00=83.7%, :30=15.5%, :15/:45+other=0.8%
+  Production hierarchy ratio (5-level 2H,1H,30M,15M,5M) = 6.30% of 5M-only baseline
 
 If Yelp ratio for the same 5-level config is within ~10% of 6.30%,
 the chosen hierarchy is dataset-robust → universality argument.

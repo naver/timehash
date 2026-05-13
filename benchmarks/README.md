@@ -9,12 +9,14 @@ import already wired into the scripts.
 
 | File | Purpose |
 |------|---------|
-| `benchmark.py`        | Synthetic POI generator (seed 42) and the in-memory + PostgreSQL GiST harness (Tables 5, 7, 9 in the paper) |
-| `benchmark_es.py`     | Within-Elasticsearch comparison: native `integer_range` (BKD) vs. Timehash keyword terms on the same ES deployment (Table 8) |
-| `benchmark_yelp.py`   | Cross-dataset hierarchy validation on the Yelp Open Dataset (Section 7.3) |
-| `results.md`          | Curated tables from `benchmark.py`, exactly as quoted in the paper |
-| `es_results.log`      | Raw stdout of `benchmark_es.py` on 100K and 1M scales |
-| `yelp_results.log`    | Raw stdout of `benchmark_yelp.py` on the Yelp Open Dataset |
+| `benchmark.py`         | Synthetic POI generator (seed 42) and the in-memory + PostgreSQL GiST harness (Tables 5, 7, 9 in the paper) |
+| `benchmark_es.py`      | Within-Elasticsearch comparison: native `integer_range` (BKD) vs. Timehash keyword terms, temporal-only point queries (preliminary single-K experiment) |
+| `benchmark_es_fair.py` | Within-Elasticsearch K-curve composability benchmark with matched indexing (one doc per business, multi-valued fields) — produces Table 8 |
+| `benchmark_yelp.py`    | Cross-dataset hierarchy validation on the Yelp Open Dataset (Section 7.3) |
+| `results.md`           | Curated tables from `benchmark.py`, exactly as quoted in the paper |
+| `es_results.log`       | Raw stdout of `benchmark_es.py` on 100K and 1M scales |
+| `es_fair_results.log`  | Raw stdout of `benchmark_es_fair.py` (K-curve at K = 10/100/1000/10000 × P1/P2/P3) |
+| `yelp_results.log`     | Raw stdout of `benchmark_yelp.py` on the Yelp Open Dataset |
 
 ## Synthetic Data Distribution
 
@@ -38,35 +40,62 @@ Generation is deterministic given `RANDOM_SEED = 42`; rerunning
 python3 -m pip install elasticsearch psycopg2-binary
 ```
 
-### Reproduce in-memory + PostgreSQL GiST tables
+### Reproduce in-memory + PostgreSQL GiST tables (Tables 5, 7, 9)
 
 ```bash
 # Optional: PostgreSQL 16 on localhost (the script creates an INT4RANGE
 # table + GiST index; it expects a database 'timehash' it can connect to)
-python3 benchmark.py
+python3 benchmark.py                  # runs all four scales (100K, 1M, 5M, 12.6M)
+python3 benchmark.py --scale=100000   # or a single scale
 ```
 
-### Reproduce within-Elasticsearch BKD comparison
+### Reproduce within-Elasticsearch K-curve composability (Table 8)
 
 ```bash
 # Requires Elasticsearch 7.17 on localhost:9200
 docker run -d --name es -p 9200:9200 -e "discovery.type=single-node" \
     docker.elastic.co/elasticsearch/elasticsearch:7.17.4
 
-python3 benchmark_es.py
-```
-
-### Reproduce Yelp cross-dataset validation
-
-```bash
-# 1. Download the Yelp Open Dataset from
+# 1. Download Yelp Open Dataset from
 #    https://business.yelp.com/data/resources/open-dataset/
 #    (academic license, requires email + agreement)
 # 2. Unpack the tar to obtain yelp_academic_dataset_business.json
 # 3. Run:
+python3 benchmark_es_fair.py /path/to/yelp_academic_dataset_business.json
+```
 
+The script indexes 127K Yelp businesses with both BKD and Timehash strategies
+(matched indexing: one document per business with multi-valued range or keyword
+fields, no document-count asymmetry), then runs 1,000 queries at four
+fetch-sizes (K = 10, 100, 1000, 10000) across three predicate counts
+(P1 = time; P2 = time + category; P3 = time + category + state). Algorithmic
+correctness is independently verified at fetch size 200,000.
+
+`benchmark_es.py` runs an earlier, simpler temporal-only ES comparison on
+synthetic data at 100K and 1M scales; it is kept for the audit trail and is
+superseded by `benchmark_es_fair.py` for the K-curve reported in the paper.
+
+### Reproduce Yelp cross-dataset hierarchy validation (Section 7.3)
+
+```bash
+# Same Yelp dataset download as the previous step.
 python3 benchmark_yelp.py /path/to/yelp_academic_dataset_business.json
 ```
+
+## Methodology audit trail
+
+The K-curve composability benchmark in Table 8 went through three iterations
+before reaching the reportable fair-comparison result. The methodology log
+and intermediate run logs are in `../audit/`:
+
+- `audit/methodology_audit.md` — methodology iteration record
+- `audit/es_multi3_results.log` — intermediate run (asymmetric indexing,
+  large-K)
+- `audit/es_multi3_topk_results.log` — intermediate run (top-K = 20)
+
+Only the final fair-comparison numbers (`es_fair_results.log`) are quoted
+in the paper; the intermediate runs document why earlier methodology
+choices were corrected.
 
 ## Notes
 

@@ -1,0 +1,52 @@
+<site-packages>/elasticsearch/connection/base.py:200: ElasticsearchWarning: Elasticsearch built-in security features are not enabled. Without authentication, your cluster could be accessible to anyone. See https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-minimal-setup.html to enable security.
+  warnings.warn(message, category=ElasticsearchWarning)
+Connected to ES 7.17.4
+  Loading Yelp JSON/yelp_academic_dataset_business.json... 1.2s, 127,123 businesses
+
+========================================================================
+Multi-predicate composability: 127,123 businesses (Yelp)
+========================================================================
+  [BKD] building index (time + categories + state)... <benchmark>/benchmark_es_multi3.py:157: DeprecationWarning: The 'body' parameter is deprecated for the 'create' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  es.indices.create(index=INDEX_RANGE, body={
+done (4.18s)
+  [BKD] warmup + measure P1/P2/P3...
+<benchmark>/benchmark_es_multi3.py:194: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_RANGE, body={
+<benchmark>/benchmark_es_multi3.py:207: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_RANGE, body={
+<benchmark>/benchmark_es_multi3.py:221: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_RANGE, body={
+  [Timehash] building index (timehash_keys + categories + state)... <benchmark>/benchmark_es_multi3.py:238: DeprecationWarning: The 'body' parameter is deprecated for the 'create' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  es.indices.create(index=INDEX_TIMEHASH, body={
+done (3.21s, 7.4 terms/doc)
+  [Timehash] warmup + measure P1/P2/P3...
+<benchmark>/benchmark_es_multi3.py:281: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_TIMEHASH, body={
+<benchmark>/benchmark_es_multi3.py:296: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_TIMEHASH, body={
+<benchmark>/benchmark_es_multi3.py:312: DeprecationWarning: The 'body' parameter is deprecated for the 'search' API and will be removed in a future version. Instead use API parameters directly. See https://github.com/elastic/elasticsearch-py/issues/1698 for more information
+  resp = es.search(index=INDEX_TIMEHASH, body={
+  [precision/recall] measuring vs ground truth (50-query sample)...
+  Method     Pred  Precision     Recall       FP       FN
+  BKD        P1       1.0000     0.0603        0  4624631
+  Timehash   P1       1.0000     0.1069        0  4399976
+  BKD        P2       1.0000     0.5795        0   453718
+  Timehash   P2       1.0000     0.7998        0   298645
+  BKD        P3       1.0000     0.9718        0    12351
+  Timehash   P3       1.0000     1.0000        0        0
+  [cross-check] sampling 50 queries where BKD vs Timehash result sets differ...
+    mismatches: 4/50
+      q=(1134, 'Restaurants', 'PA')  bkd_n=4662 th_n=9535  bkd_only=[]  th_only=[63177, 63201, 63213, 63217, 63225]
+      q=(708, 'Shopping', 'PA')  bkd_n=4198 th_n=4474  bkd_only=[]  th_only=[119035, 119045, 119055, 119079, 119095]
+      q=(764, 'Restaurants', 'FL')  bkd_n=4840 th_n=7194  bkd_only=[]  th_only=[85287, 85292, 85295, 85306, 85319]
+
+  Predicates                          BKD P50    BKD P95     TH P50     TH P95   Ratio P50
+  --------------------------------------------------------------------------------------------
+  P1: time only                         40.9       42.1       52.3       55.4    BKD 1.28x
+  P2: time + category                   43.9       47.1       55.3       64.4    BKD 1.26x
+  P3: time + category + state           12.1       45.3        8.7       42.1     TH 1.39x
+
+  Marginal cost (P50 delta in ms):
+  ------------------------------------------------------------
+  BKD:      P1->P2 = +  3.0ms   P2->P3 = +-31.8ms   P1->P3 = +-28.9ms
+  Timehash: P1->P2 = +  3.0ms   P2->P3 = +-46.7ms   P1->P3 = +-43.7ms
